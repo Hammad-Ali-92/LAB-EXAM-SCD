@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "3005:3005"
+    networks:
+      - cafe-network
+
+  menu-service:
+    build:
+      context: ./menu-service
+    networks:
+      - cafe-network
+
+  order-service:
+    build:
+      context: ./order-service
+    networks:
+      - cafe-network
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+    networks:
+      - cafe-network
+
+  customer-service:
+    build:
+      context: ./customer-service
+    networks:
+      - cafe-network
+
+  payment-service:
+    build:
+      context: ./payment-service
+    networks:
+      - cafe-network
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - cafe-network
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    networks:
+      - cafe-network
+
+networks:
+  cafe-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
